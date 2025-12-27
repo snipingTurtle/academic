@@ -14,12 +14,97 @@ struct Node
 
 Node* tree_root = NULL;
 
+Node* create_node(int val);
+void insert_node(int val);
+int get_height(Node* curr);
+void update_height(Node* curr);
+void check_balance(Node* newNode);
+void balance_node(Node* newNode, Node* curr, int balance);
+int balance_factor(Node* curr);
+void left_rotate(Node* z);
+void right_rotate(Node* z);
+Node* searching(int key);
+void deletion (int key);
+void transplant(Node* u, Node* v);
+Node* tree_min(Node* curr);
+void del_check_balance(Node* curr);
+void print_avl(Node* curr);
+
+int main()
+{
+    while(1)
+    {
+        string s;
+        cin >> s;
+
+        if(s == "-1")
+        {
+            print_avl(tree_root);
+            cout << endl;
+            break;
+        }
+        else if((int)s.size() != 6)
+        {
+            int x = stoi(s);
+
+            insert_node(x);
+            cout << "Root=" << tree_root->val << endl;
+        }
+        else
+        {
+            int x;
+            cin >> x;
+
+            deletion(x);
+            cout << "Root=" << tree_root->val << endl;
+        }
+    }
+}
+
 Node* create_node(int val)
 {
     Node* temp = new Node;
     temp->val = val;
-
+    
     return temp;
+}
+
+void insert_node(int val)
+{
+    Node* newNode = create_node(val);
+    Node* temp = tree_root;
+    if(temp == NULL)
+    {
+        tree_root = newNode;
+        print_avl(tree_root);
+        cout << endl;
+        check_balance(newNode);
+        return;
+    }
+
+    Node* target = temp;
+
+    while(temp != NULL)
+    {
+        target = temp;
+        if(newNode->val < temp->val)
+        {
+            temp = temp->left_child;
+        }
+        else
+        {
+            temp = temp->right_child;
+        }
+    }
+
+    newNode->parent = target;
+    if(newNode->val < target->val) target->left_child = newNode;
+    else target->right_child = newNode;
+    update_height(newNode);
+
+    print_avl(tree_root);
+    cout << endl;
+    check_balance(newNode);
 }
 
 int get_height(Node* curr)
@@ -78,64 +163,6 @@ void right_rotate(Node* z)
     update_height(z);
 }
 
-int balance_factor(Node* curr)
-{
-
-    if(curr == NULL) return 0;
-    int balance = get_height(curr->left_child) - get_height(curr->right_child);
-    return balance;
-}
-
-void print_avl(Node* curr)
-{
-    if(curr == NULL) return;
-
-    print_avl(curr->left_child);
-
-    cout << curr->val;
-    cout << "(" << balance_factor(curr) << ") ";
-
-    print_avl(curr->right_child);
-}
-
-void balance_node(Node* newNode, Node* curr, int balance)
-{
-    cout << "Imbalance at node: " << curr->val << endl;
-    if(balance > 1)
-    {
-        if(newNode->val < curr->left_child->val)
-        {
-            cout << "LL case" << endl;
-            right_rotate(curr);
-        }
-        else if(newNode->val > curr->left_child->val)
-        {
-            cout << "LR case" << endl;
-            left_rotate(curr->left_child);
-            right_rotate(curr);
-        }
-    }
-
-    if(balance < -1)
-    {
-        if(newNode->val > curr->right_child->val)
-        {
-            cout << "RR case" << endl;
-            left_rotate(curr);
-        }
-        else if(newNode->val < curr->right_child->val)
-        {
-            cout << "RL case" << endl;
-            right_rotate(curr->right_child);
-            left_rotate(curr);
-        }
-    }
-
-    cout << "Status: ";
-    print_avl(tree_root);
-    cout << endl;
-}
-
 void check_balance(Node* newNode)
 {
     Node* temp = newNode;
@@ -155,42 +182,50 @@ void check_balance(Node* newNode)
     if(temp == NULL) cout << "Balanced" << endl;
 }
 
-void insert_node(int val)
+int balance_factor(Node* curr)
 {
-    Node* newNode = create_node(val);
-    Node* temp = tree_root;
-    if(temp == NULL)
-    {
-        tree_root = newNode;
-        print_avl(tree_root);
-        cout << endl;
-        check_balance(newNode);
-        return;
-    }
+    
+    if(curr == NULL) return 0;
+    int balance = get_height(curr->left_child) - get_height(curr->right_child);
+    return balance;
+}
 
-    Node* target = temp;
-
-    while(temp != NULL)
+void balance_node(Node* newNode, Node* curr, int balance)
+{
+    cout << "Imbalance at node: " << curr->val << endl;
+    if(balance > 1)
     {
-        target = temp;
-        if(newNode->val < temp->val)
+        if(newNode->val < curr->left_child->val)
         {
-            temp = temp->left_child;
+            cout << "LL case" << endl;
+            right_rotate(curr);
         }
-        else
+        else if(newNode->val > curr->left_child->val)
         {
-            temp = temp->right_child;
+            cout << "LR case" << endl;
+            left_rotate(curr->left_child);
+            right_rotate(curr);
         }
     }
-
-    newNode->parent = target;
-    if(newNode->val < target->val) target->left_child = newNode;
-    else target->right_child = newNode;
-    update_height(newNode);
-
+    
+    if(balance < -1)
+    {
+        if(newNode->val > curr->right_child->val)
+        {
+            cout << "RR case" << endl;
+            left_rotate(curr);
+        }
+        else if(newNode->val < curr->right_child->val)
+        {
+            cout << "RL case" << endl;
+            right_rotate(curr->right_child);
+            left_rotate(curr);
+        }
+    }
+    
+    cout << "Status: ";
     print_avl(tree_root);
     cout << endl;
-    check_balance(newNode);
 }
 
 Node* searching(int key)
@@ -201,7 +236,7 @@ Node* searching(int key)
         if(key > temp->val) temp = temp->right_child;
         else temp = temp->left_child;
     }
-
+    
     return temp;
 }
 
@@ -219,10 +254,9 @@ void transplant(Node* u, Node* v)
     {
         u->parent->right_child = v;
     }
-
+    
     if(v != NULL) v->parent = u->parent;
 }
-
 
 Node* tree_min(Node* curr)
 {
@@ -232,44 +266,35 @@ Node* tree_min(Node* curr)
     {
         temp = temp->left_child;
     }
-
+    
     return temp;
 }
 
-void balance_node_del(Node* curr, int balance)
+void del_check_balance(Node* curr)
 {
-    cout << "Imbalance at node: " << curr->val << endl;
-    if(balance > 1)
+    while(curr != NULL)
     {
-         right_rotate(curr);
-    }
-
-    if(balance < -1)
-    {
-        left_rotate(curr);
-    }
-
-    cout << "Status: ";
-    print_avl(tree_root);
-    cout << endl;
-}
-
-void check_balance_del(Node* curr)
-{
-    Node* temp = curr;
-    while(temp != NULL)
-    {
-        int balance = balance_factor(temp);
-
-        if((balance < -1) || (balance > 1))
+        int balance = balance_factor(curr);
+        
+        if((balance > 1) || (balance < -1))
         {
-            balance_node_del(temp, balance);
+            cout << "Imabalanced node: " << curr->val << endl;
+            
+            if(balance > 1) 
+            {
+                right_rotate(curr);
+            }
+            else left_rotate(curr);
+
+            print_avl(tree_root);
+            cout << endl;
+            
             break;
         }
-        else temp = temp->parent;
+        else curr = curr->parent;
     }
 
-    if(temp == NULL) cout << "Balanced" << endl;
+    if(curr == NULL) cout << "Balanced" << endl;
 }
 
 void deletion (int key)
@@ -284,7 +309,7 @@ void deletion (int key)
             print_avl(tree_root);
             cout << endl;
             update_height(z->parent);
-            check_balance(z->parent);
+            del_check_balance(z->parent);
         }
         else if(z->right_child == NULL)
         {
@@ -292,60 +317,41 @@ void deletion (int key)
             print_avl(tree_root);
             cout << endl;
             update_height(z->parent);
-            check_balance_del(z->parent);
+            del_check_balance(z->parent);
         }
         else
         {
             Node* y = tree_min(z->right_child);
-            Node* temp = y;
-
+            Node* temp = z->parent;
+            
             if(y->parent != z)
             {
-                temp = y->parent;
+                if(y->right_child != NULL) temp = y->right_child;
                 transplant(y, y->right_child);
                 y->right_child = z->right_child;
                 z->right_child->parent = y;
             }
-
+            
             transplant(z, y);
             y->left_child = z->left_child;
             z->left_child->parent = y;
-
+            
             print_avl(tree_root);
             cout << endl;
             update_height(temp);
-            check_balance_del(temp);
+            del_check_balance(temp);
         }
     }
 }
 
-int main()
+void print_avl(Node* curr)
 {
-    while(1)
-    {
-        string s;
-        cin >> s;
+    if(curr == NULL) return;
 
-        if(s == "-1")
-        {
-            print_avl(tree_root);
-            cout << endl;
-            break;
-        }
-        else if((int)s.size() != 6)
-        {
-            int x = stoi(s);
+    print_avl(curr->left_child);
 
-            insert_node(x);
-            cout << "Root=" << tree_root->val << endl;
-        }
-        else
-        {
-            int x;
-            cin >> x;
+    cout << curr->val;
+    cout << "(" << balance_factor(curr) << ") ";
 
-            deletion(x);
-            cout << "Root=" << tree_root->val << endl;
-        }
-    }
+    print_avl(curr->right_child);
 }
