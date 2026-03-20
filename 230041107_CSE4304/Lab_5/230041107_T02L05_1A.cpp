@@ -1,26 +1,26 @@
-#include<iostream>
+#include <iostream>
 
 using namespace std;
 
 struct Node
 {
     int val;
-    Node* next;
-    Node* prev;
+    Node *next;
+    Node *prev;
 };
 
-Node* head = NULL;
-Node* tail = NULL;
+Node *head = NULL;
+Node *tail = NULL;
 
 void insert_front(int key);
 void insert_back(int key);
-void insert_after_node (int key,  int v);
-void update_node (int key, int v);
-void remove_head ();
-void remove_element (int key);
-void remove_end ();
+void insert_after_node(int key, int v);
+void update_node(int key, int v);
+void remove_head();
+void remove_element(int key);
+void remove_end();
 void print_status();
-Node* create_node(int key);
+Node *create_node(int key);
 void print_head();
 void print_tail();
 void print_list();
@@ -28,62 +28,62 @@ void print_list();
 int main()
 {
     int id;
-    while(1)
+    while (1)
     {
         cin >> id;
 
-        if(id == 1)
+        if (id == 1)
         {
             int x;
             cin >> x;
 
             insert_front(x);
         }
-        else if(id == 2)
+        else if (id == 2)
         {
             int x;
             cin >> x;
 
             insert_back(x);
         }
-        else if(id == 3)
+        else if (id == 3)
         {
             int v, key;
             cin >> key >> v;
 
             insert_after_node(key, v);
         }
-        else if(id == 4)
+        else if (id == 4)
         {
             int key, v;
             cin >> key >> v;
 
             update_node(key, v);
         }
-        else if(id == 5)
+        else if (id == 5)
         {
             remove_head();
         }
-        else if(id == 6)
+        else if (id == 6)
         {
             int key;
             cin >> key;
 
             remove_element(key);
         }
-        else if(id == 7)
+        else if (id == 7)
         {
             remove_end();
         }
-        else if(id == 8) break;
+        else if (id == 8)
+            break;
         print_status();
     }
 }
 
-
-Node* create_node(int key)
+Node *create_node(int key)
 {
-    Node* temp = new Node;
+    Node *temp = new Node;
     temp->val = key;
     temp->next = NULL;
     temp->prev = NULL;
@@ -93,26 +93,25 @@ Node* create_node(int key)
 
 void insert_front(int key)
 {
-    Node* n = create_node(key);
-    if(head == NULL)
+    Node *n = create_node(key);
+    if (head == NULL)
     {
         head = n;
         tail = n;
         return;
     }
 
-    head->prev  = n;
+    head->prev = n;
     n->next = head;
     head = n;
 
     return;
 }
 
-
 void insert_back(int key)
 {
-    Node* temp = create_node(key);
-    if(tail == NULL)
+    Node *temp = create_node(key);
+    if (tail == NULL)
     {
         head = temp;
         tail = temp;
@@ -124,24 +123,23 @@ void insert_back(int key)
     tail = temp;
 }
 
-
-void insert_after_node (int key,  int v)
+void insert_after_node(int key, int v)
 {
-    Node* temp = create_node(key);
+    Node *temp = create_node(key);
 
-    Node* nxt = head;
-    while((nxt != NULL) && (nxt->val != v))
+    Node *nxt = head;
+    while ((nxt != NULL) && (nxt->val != v))
     {
         nxt = nxt->next;
     }
 
-    if(nxt == NULL)
+    if (nxt == NULL)
     {
         cout << "Value Not Found" << endl;
         return;
     }
 
-    if(nxt->next != NULL)
+    if (nxt->next != NULL)
     {
         nxt->next->prev = temp;
     }
@@ -154,15 +152,15 @@ void insert_after_node (int key,  int v)
     nxt->next = temp;
 }
 
-void update_node (int key, int v)
+void update_node(int key, int v)
 {
-    Node* nxt = head;
-    while((nxt != NULL) && (nxt->val != v))
+    Node *nxt = head;
+    while ((nxt != NULL) && (nxt->val != v))
     {
         nxt = nxt->next;
     }
 
-    if(nxt == NULL)
+    if (nxt == NULL)
     {
         cout << "Value Not Found" << endl;
         return;
@@ -173,7 +171,7 @@ void update_node (int key, int v)
 
 void remove_head()
 {
-    if(head == NULL)
+    if (head == NULL)
     {
         cout << "Underflow" << endl;
         return;
@@ -182,41 +180,40 @@ void remove_head()
     head->prev = NULL;
 }
 
-void remove_element (int key)
+void remove_element(int key)
 {
-    Node* nxt = head;
-    while((nxt != NULL) && (nxt->val != key))
+    Node *nxt = head;
+    while ((nxt != NULL) && (nxt->val != key))
     {
         nxt = nxt->next;
     }
 
-    if(nxt == NULL)
+    if (nxt == NULL)
     {
         cout << "Value Not Found" << endl;
         return;
     }
 
-    if((nxt == head) && (nxt == tail))
+    if ((nxt == head) && (nxt == tail))
     {
         head = NULL;
         tail = NULL;
         return;
     }
 
-    if(nxt->next != NULL)
+    if (nxt->next != NULL)
     {
         nxt->next->prev = nxt->prev;
     }
-    if(nxt->prev != NULL)
+    if (nxt->prev != NULL)
     {
         nxt->prev->next = nxt->next;
     }
 }
 
-
-void remove_end ()
+void remove_end()
 {
-    if(tail == head)
+    if (tail == head)
     {
         tail = NULL;
         head = NULL;
@@ -234,31 +231,32 @@ void print_status()
     print_list();
 }
 
-
 void print_head()
 {
-    if(head == NULL)
+    if (head == NULL)
     {
         cout << "Head=Null, ";
     }
-    else cout << "Head=" << head->val << ", ";
+    else
+        cout << "Head=" << head->val << ", ";
 }
 
 void print_tail()
 {
-    if(tail == NULL)
+    if (tail == NULL)
     {
         cout << "Tail=Null, ";
     }
-    else cout << "Tail=" << tail->val << ", ";
+    else
+        cout << "Tail=" << tail->val << ", ";
     cout << endl;
 }
 
 void print_list()
 {
-    Node* temp = head;
-    Node* temp2 = tail;
-    if(head == NULL)
+    Node *temp = head;
+    Node *temp2 = tail;
+    if (head == NULL)
     {
         cout << "Head2Tail: Empty" << endl;
         cout << "Tail2Head: Empty" << endl;
@@ -266,7 +264,7 @@ void print_list()
     else
     {
         cout << "Head2Tail: ";
-        while(temp != NULL)
+        while (temp != NULL)
         {
             cout << temp->val << " ";
             temp = temp->next;
@@ -274,7 +272,7 @@ void print_list()
         cout << endl;
 
         cout << "Tail2Head: ";
-        while(temp2 != NULL)
+        while (temp2 != NULL)
         {
             cout << temp2->val << " ";
             temp2 = temp2->prev;

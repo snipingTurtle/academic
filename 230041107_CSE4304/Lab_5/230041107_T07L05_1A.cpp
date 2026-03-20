@@ -18,11 +18,11 @@ struct Queue
 
 void enqueue(Queue *q, int val);
 Node *create_node(int val);
-void dequeue(Queue* q);
-bool isEmpty(Queue* q);
-bool isFull(Queue* q);
-int size(Queue* q);
-int front(Queue* q);
+void dequeue(Queue *q);
+bool isEmpty(Queue *q);
+bool isFull(Queue *q);
+int size(Queue *q);
+int front(Queue *q);
 void print_queue(Queue *q);
 
 int main()
@@ -49,7 +49,7 @@ int main()
             int x;
             cin >> x;
 
-            if(isFull(q))
+            if (isFull(q))
             {
                 cout << "Overflow" << endl;
             }
@@ -68,7 +68,7 @@ int main()
         else if (id == 3)
         {
             cout << "isEmpty: ";
-        
+
             if (isEmpty(q))
                 cout << "True" << endl;
             else
@@ -94,7 +94,7 @@ int main()
 
             if (!isEmpty(q))
                 cout << front(q) << endl;
-            else 
+            else
                 cout << "Empty" << endl;
         }
     }
@@ -135,7 +135,7 @@ void enqueue(Queue *q, int val)
     return;
 }
 
-void dequeue(Queue* q)
+void dequeue(Queue *q)
 {
     if (isEmpty(q))
     {
@@ -144,11 +144,11 @@ void dequeue(Queue* q)
     }
 
     q->curr_size--;
-    
+
     q->head = q->head->next;
 }
 
-bool isEmpty(Queue* q)
+bool isEmpty(Queue *q)
 {
     if (q->curr_size == 0)
         return true;
@@ -156,7 +156,7 @@ bool isEmpty(Queue* q)
         return false;
 }
 
-bool isFull(Queue* q)
+bool isFull(Queue *q)
 {
     if (q->curr_size == q->max_size)
         return true;
@@ -164,17 +164,17 @@ bool isFull(Queue* q)
         return false;
 }
 
-int size(Queue* q)
+int size(Queue *q)
 {
     return q->curr_size;
 }
 
-int front(Queue* q)
+int front(Queue *q)
 {
     return q->head->val;
 }
 
-void print_queue(Queue* q)
+void print_queue(Queue *q)
 {
     if (isEmpty(q))
         return;

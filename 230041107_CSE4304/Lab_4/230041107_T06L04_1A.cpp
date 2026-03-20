@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 
 using namespace std;
 
@@ -19,12 +19,13 @@ int main()
 {
     int heap[MAXN];
 
-    while(1)
+    while (1)
     {
         int x;
         cin >> x;
 
-        if(x == -1) break;
+        if (x == -1)
+            break;
 
         heap[n] = x;
         n++;
@@ -34,49 +35,54 @@ int main()
     build_max_heap(heap);
 
     cout << "Max Heap: ";
-    for(int i = 1; i <= n; i++) cout << heap[i] << " ";
+    for (int i = 1; i <= n; i++)
+        cout << heap[i] << " ";
     cout << endl;
 
-
     int id;
-    while(cin >> id)
+    while (cin >> id)
     {
-        if(id == 1)
+        if (id == 1)
         {
             int res = Heap_Maximum(heap);
-            if(res < 0) cout << "Underflow" << endl;
-            else cout << res << endl;
+            if (res < 0)
+                cout << "Underflow" << endl;
+            else
+                cout << res << endl;
         }
-        else if(id == 2)
+        else if (id == 2)
         {
             int res = Heap_extract_max(heap);
-            if(res >= 0) cout << res << endl;
-            else cout << "Underflow" << endl;
+            if (res >= 0)
+                cout << res << endl;
+            else
+                cout << "Underflow" << endl;
         }
-        else if(id == 3)
+        else if (id == 3)
         {
             int x;
             cin >> x;
 
             Max_heap_insert(x, heap);
         }
-        else if(id == 4)
+        else if (id == 4)
         {
             int pos, val;
             cin >> pos >> val;
 
             Heap_decrease_key(pos, val, heap);
         }
-        else if(id == 5)
+        else if (id == 5)
         {
             int pos, val;
             cin >> pos >> val;
 
             Heap_increase_key(pos, val, heap);
         }
-        else break;
+        else
+            break;
 
-        for(int i = 1; i <= n; i++)
+        for (int i = 1; i <= n; i++)
         {
             cout << heap[i] << " ";
         }
@@ -91,18 +97,19 @@ void max_heapify(int heap[], int parent)
 
     int largest;
 
-    if((L_child <= n) && (heap[L_child] > heap[parent]))
+    if ((L_child <= n) && (heap[L_child] > heap[parent]))
     {
         largest = L_child;
     }
-    else largest = parent;
+    else
+        largest = parent;
 
-    if((R_child <= n) && (heap[R_child] > heap[largest]))
+    if ((R_child <= n) && (heap[R_child] > heap[largest]))
     {
         largest = R_child;
     }
 
-    if(largest != parent)
+    if (largest != parent)
     {
         int temp = heap[largest];
         heap[largest] = heap[parent];
@@ -114,7 +121,7 @@ void max_heapify(int heap[], int parent)
 
 void build_max_heap(int heap[])
 {
-    for(int i = n / 2; i > 0; i--)
+    for (int i = n / 2; i > 0; i--)
     {
         max_heapify(heap, i);
     }
@@ -122,19 +129,22 @@ void build_max_heap(int heap[])
 
 int Heap_Maximum(int heap[])
 {
-    if(n < 1) return -1;
+    if (n < 1)
+        return -1;
     return heap[1];
 }
 
 int Heap_extract_max(int heap[])
 {
-    if(n < 1) return -1;
+    if (n < 1)
+        return -1;
     int res = heap[1];
 
     heap[1] = heap[n];
     n--;
 
-    if(n > 0) max_heapify(heap, 1);
+    if (n > 0)
+        max_heapify(heap, 1);
 
     return res;
 }
@@ -149,7 +159,8 @@ void Max_heap_insert(int value, int heap[])
 
 void Heap_decrease_key(int i, int k, int heap[])
 {
-    if(i > n) return;
+    if (i > n)
+        return;
     heap[i] -= k;
 
     max_heapify(heap, i);
@@ -157,7 +168,8 @@ void Heap_decrease_key(int i, int k, int heap[])
 
 void Heap_increase_key(int i, int k, int heap[])
 {
-    if(i > n) return;
+    if (i > n)
+        return;
     heap[i] += k;
 
     reverse_heapify(i, heap);
@@ -165,10 +177,11 @@ void Heap_increase_key(int i, int k, int heap[])
 
 void reverse_heapify(int n, int heap[])
 {
-    if(n <= 1) return;
+    if (n <= 1)
+        return;
     int parent = n / 2;
 
-    if(heap[n] > heap[parent])
+    if (heap[n] > heap[parent])
     {
         int temp = heap[parent];
         heap[parent] = heap[n];
@@ -176,5 +189,6 @@ void reverse_heapify(int n, int heap[])
 
         reverse_heapify(parent, heap);
     }
-    else return;
+    else
+        return;
 }

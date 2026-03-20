@@ -1,119 +1,134 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include <string>
+#include <iomanip>
 
 using namespace std;
 
-class Meme
+class MenuItem
 {
 private:
-    string memeName;
-    int originYear, humorScore;
-    bool isStillViral;
+    int id;
+    string name;
+    double price;
 
 public:
-    Meme() : memeName(""), originYear(2010), humorScore(50), isStillViral(false)
+    MenuItem() : id(0), name("NULL"), price(0)
     {
     }
 
-    Meme(const string &name, const int &origin, const int &score, const bool &viral) : memeName(name), originYear(2010), humorScore(50), isStillViral(viral)
+    MenuItem(const int &i, const string &s, const double &p) : id(i), name(s), price(p)
     {
-        set_originYear(origin);
-        set_humorScore(score);
     }
 
-    void set_memeName(const string &name)
+    void setID(const int &i)
     {
-        memeName = name;
+        id = i;
     }
 
-    string get_memeName() const
+    void setName(const string &s)
     {
-        return memeName;
+        name = s;
     }
 
-    void set_originYear(const int &origin)
+    void setPrice(const double &p)
     {
-        if ((origin > 2025) || (origin < 2000))
+        price = p;
+    }
+
+    int getID() const
+    {
+        return id;
+    }
+
+    string getName() const
+    {
+        return name;
+    }
+
+    double getPrice() const
+    {
+        return price;
+    }
+
+    string serialize() const
+    {
+        return getID() + "|" + getName() + "|" + to_string(getPrice());
+        ;
+    }
+
+    static bool deserialize(const string &line, MenuItem &out)
+    {
+        string s = "";
+        int sw = 0;
+        for (int i = 0; i < (int)line.size(); i++)
         {
-            originYear = 2010;
+            if (line[i] == '|')
+            {
+                sw++;
+                if (sw == 1)
+                {
+                    int idx = stoi(s);
+                    out.setID(idx);
+                    s = "";
+                }
+                else if (sw == 2)
+                {
+                    out.setName(s);
+                    s = "";
+                }
+                else
+                {
+                    cout << "Error in deserialize" << endl;
+                    return false;
+                }
+            }
+            else
+            {
+                s.push_back(line[i]);
+            }
         }
-        else
-            originYear = origin;
+        out.setPrice(stod(s));
+        return true;
     }
 
-    int get_originYear() const
+    void printRow(ostream &os) const
     {
-        return originYear;
+        os << setw(7) << left << getID();
+        os << "| ";
+        os << setw(17) << left << getName();
+        os << "| ";
+        os << setw(6) << right << getPrice();
+        os << " |";
     }
 
-    void set_humorScore(const int &score)
+    static void printHeader(ostream &os)
     {
-        if ((score < 1) || (score > 100))
-        {
-            humorScore = 50;
-        }
-        else
-            humorScore = score;
+        os << setw(43) << setfill('-') << endl;
+        os << "| MenuID | Item              |     Price |" << endl;
+        os << setw(43) << setfill('-') << endl;
     }
 
-    int get_humorScore() const
+    static void printFooter(ostream &os)
     {
-        return humorScore;
+        os << setw(43) << setfill('-') << endl;
     }
 
-    void set_Viral(const bool &viral)
+    ~MenuItem()
     {
-        isStillViral = viral;
-    }
-
-    bool get_Viral() const
-    {
-        return isStillViral;
-    }
-
-    void set_meme(const string &name, const int &origin, const int &score, const bool &viral)
-    {
-        set_memeName(name);
-        set_originYear(origin);
-        set_humorScore(score);
-        set_Viral(viral);
     }
 };
 
-void archiveMemes(Meme collection[], const int &sz)
+bool recordSale(const string &salesFile, int saleId, const MenuItem &mn, int units)
 {
-    string name;
-    int origin, score;
-    bool viral;
+}
 
-    for (int i = 0; i < 5; i++)
-    {
-        cin >> name >> origin >> score >> viral;
-        collection[i].set_meme(name, origin, score, viral);
-    }
-
-    int org = 2005 + (rand() % 11);
-    int hum = 1 + (rand() % 100);
-
-    for (int i = 5; i < sz; i++)
-    {
-        collection[i].set_meme("Lost Meme", org, hum, false);
-    }
+int loadMenu(const string &menuFile, MenuItem arr[], int maxCount)
+{
 }
 
 int main()
 {
-    srand(time(NULL));
-
-    Meme collection[40];
-    archiveMemes(collection, 40);
-
-    for (int i = 0; i < 40; i++)
-    {
-        if ((collection[i].get_originYear() < 2010) && (collection[i].get_humorScore() > 70))
-        {
-            cout << collection[i].get_memeName() << endl;
-        }
-    }
+    cout << setw(42) << setfill('-') << "" << endl;
+    cout << "| MenuID | Item              |     Price |" << endl;
+    cout << setw(42) << setfill('-') << "" << endl;
 }

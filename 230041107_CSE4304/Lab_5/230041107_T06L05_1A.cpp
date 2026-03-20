@@ -1,37 +1,37 @@
-#include<iostream>
+#include <iostream>
 
 using namespace std;
 
 struct Node
 {
     int val;
-    Node* next;
-    Node* prev;
+    Node *next;
+    Node *prev;
 };
 
 struct Stack
 {
-    Node* head = NULL;
-    Node* tail = NULL;
+    Node *head = NULL;
+    Node *tail = NULL;
     int max_size;
     int curr_size = 0;
 };
 
-void push(Stack* s, int val);
-Node* create_node(int val);
-void pop(Stack* s);
-bool isEmpty(Stack* s);
-bool isFull(Stack* s);
-int size(Stack* s);
-int top(Stack* s);
-void print_stack(Stack* s);
+void push(Stack *s, int val);
+Node *create_node(int val);
+void pop(Stack *s);
+bool isEmpty(Stack *s);
+bool isFull(Stack *s);
+int size(Stack *s);
+int top(Stack *s);
+void print_stack(Stack *s);
 
 int main()
 {
     int n;
     cin >> n;
 
-    Stack* s = new Stack;
+    Stack *s = new Stack;
     s->max_size = n;
 
     while (true)
@@ -39,8 +39,9 @@ int main()
         int id;
         cin >> id;
 
-        if(id == -1) break;
-        else if(id == 1)
+        if (id == -1)
+            break;
+        else if (id == 1)
         {
             int x;
             cin >> x;
@@ -48,37 +49,40 @@ int main()
             push(s, x);
             print_stack(s);
         }
-        else if(id == 2)
+        else if (id == 2)
         {
             pop(s);
             print_stack(s);
         }
-        else if(id == 3)
+        else if (id == 3)
         {
-            if(isEmpty(s)) cout << "True" << endl;
-            else cout << "False" << endl; 
+            if (isEmpty(s))
+                cout << "True" << endl;
+            else
+                cout << "False" << endl;
         }
-        else if(id == 4)
+        else if (id == 4)
         {
-            if(isFull(s)) cout << "True" << endl;
-            else cout << "False" << endl;
+            if (isFull(s))
+                cout << "True" << endl;
+            else
+                cout << "False" << endl;
         }
-        else if(id == 5)
+        else if (id == 5)
         {
             cout << size(s) << endl;
         }
-        else if(id == 6)
+        else if (id == 6)
         {
-            if(!isEmpty(s)) cout << top(s) << endl;
+            if (!isEmpty(s))
+                cout << top(s) << endl;
         }
     }
-    
 }
 
-
-Node* create_node(int val)
+Node *create_node(int val)
 {
-    Node* temp = new Node;
+    Node *temp = new Node;
     temp->val = val;
     temp->next = NULL;
     temp->prev = NULL;
@@ -86,18 +90,17 @@ Node* create_node(int val)
     return temp;
 }
 
-
-void push(Stack* s, int val)
+void push(Stack *s, int val)
 {
-    if(isFull(s))
+    if (isFull(s))
     {
         cout << "Overflow" << endl;
         return;
     }
 
-    Node* temp = create_node(val);
+    Node *temp = create_node(val);
 
-    if(isEmpty(s))
+    if (isEmpty(s))
     {
         s->curr_size++;
         s->head = temp;
@@ -114,10 +117,9 @@ void push(Stack* s, int val)
     return;
 }
 
-
-void pop(Stack* s)
+void pop(Stack *s)
 {
-    if(isEmpty(s)) 
+    if (isEmpty(s))
     {
         cout << "Underflow" << endl;
         return;
@@ -125,7 +127,7 @@ void pop(Stack* s)
 
     s->curr_size--;
     s->head = s->head->next;
-    if(s->head == NULL)
+    if (s->head == NULL)
     {
         s->tail = NULL;
     }
@@ -135,37 +137,38 @@ void pop(Stack* s)
     }
 }
 
-
-bool isEmpty(Stack* s)
+bool isEmpty(Stack *s)
 {
-    if(s->curr_size == 0) return true;
-    else return false;
+    if (s->curr_size == 0)
+        return true;
+    else
+        return false;
 }
 
-
-bool isFull(Stack* s)
+bool isFull(Stack *s)
 {
-    if(s->curr_size == s->max_size) return true;
-    else return false;
+    if (s->curr_size == s->max_size)
+        return true;
+    else
+        return false;
 }
 
-
-int size(Stack* s)
+int size(Stack *s)
 {
     return s->curr_size;
 }
 
-int top(Stack* s)
+int top(Stack *s)
 {
     return s->head->val;
 }
 
-
-void print_stack(Stack* s)
+void print_stack(Stack *s)
 {
-    if(isEmpty(s)) return;
-    Node* temp = s->tail;
-    while(temp != NULL)
+    if (isEmpty(s))
+        return;
+    Node *temp = s->tail;
+    while (temp != NULL)
     {
         cout << temp->val << " ";
         temp = temp->prev;
